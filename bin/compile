@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "-----> Install mediainfo (v20.9)."
+
+BUILD_DIR=$1
+BASE_DIR="$PWD"
+VENDOR_DIR="vendor"
+PACKAGE_NAME="mediainfo"
+PROFILE_PATH="${BUILD_DIR}/.profile.d/${PACKAGE_NAME}.sh"
+url=(libmms libzen libmediainfo mediainfo)
+declare -A urls=(
+	[libmms]="https://github.com/iTzBlack007/Archives/raw/main/libmms0_0.6.4-3_amd64.deb"
+	[libzen]="https://mediaarea.net/download/binary/libzen0/0.4.38/libzen0v5_0.4.38-1_amd64.xUbuntu_20.04.deb"
+	[libmediainfo]="https://mediaarea.net/download/binary/libmediainfo0/20.09/libmediainfo0v5_20.09-1_amd64.xUbuntu_20.04.deb"
+	[mediainfo]="https://mediaarea.net/download/binary/mediainfo/20.09/mediainfo_20.09-1_amd64.xUbuntu_20.04.deb"
+)
+
+mkdir -p "${BUILD_DIR}/${VENDOR_DIR}/${PACKAGE_NAME}" && cd "$_" || exit 1
+DOWNLOAD_DIR="$PWD"
+for i in "${url[@]}"; do
+	echo "-----> Downloading : ${urls[$i]}"
+	curl -s -L --url "${urls[$i]}" --output "$i".deb
+	dpkg -x "$i".deb .
+	rm "$i".deb
+done
+
+cd "$BASE_DIR" || exit 1
+mkdir "${BUILD_DIR}/.profile.d"
+
+echo "-----> Writing profile script."
+cat <<EOF >"$PROFILE_PATH"
+export PATH=$PATH:${DOWNLOAD_DIR}/usr/bin
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DOWNLOAD_DIR}/usr/lib/x86_64-linux-gnu
+EOF
+
+echo "-----> Successfully installed mediainfo (v20.9)."
+echo "-----> Telegram : @iTz_Black007"
