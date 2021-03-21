@@ -29,8 +29,8 @@ mkdir "${BUILD_DIR}/.profile.d"
 
 echo "-----> Writing profile script."
 cat <<EOF >"$PROFILE_PATH"
-export PATH=$PATH:${DOWNLOAD_DIR}/usr/bin
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DOWNLOAD_DIR}/usr/lib/x86_64-linux-gnu
+export PATH=$PATH:${DOWNLOAD_DIR}/usr/bin:${HOME}/vendor/mediainfo/usr/bin
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${DOWNLOAD_DIR}/usr/lib/x86_64-linux-gnu:${HOME}/vendor/mediainfo/usr/lib/x86_64-linux-gnu
 EOF
 
 echo "-----> Successfully installed mediainfo (v20.9)."
